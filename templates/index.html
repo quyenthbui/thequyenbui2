@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% include "metadata.html" %}
+  <title>Moody</title>
+  <link rel="stylesheet" href="../static/css/index.css">
+</head>
+
+<body class="bg-gradient">
+  {% include "particle.html" %} {% include "flash-message.html" %} {% include "contribute_alert.html" %}
+  {% include "notice.html" %} {% include "navbar.html" %}
+
+  <div class="animated fadeIn mainContent">
+    <div class="alert alert-success font-roboto-700 font-60px text-white ">
+      <div class="mb-0 color-155724">Hey, how are you today?</div>
+      <div class="text-muted">Today I am&nbsp;
+        <span class="dropdown ">
+          <span class="dropdown-toggle border-bot-3px text-dark" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            moody &#128123;
+          </span >
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" href="{{ url_for('recommend', happy=5) }}">Cheerful &#x1F606;</a>
+            <a class="dropdown-item" href="{{ url_for('recommend', happy=4) }}">Happy &#x1F600;</a>
+            <a class="dropdown-item" href="{{ url_for('recommend', happy=3) }}">OK &#x1F610;</a>
+            <a class="dropdown-item" href="{{ url_for('recommend', happy=2) }}">Sad &#x1F61E;</a>
+            <a class="dropdown-item" href="{{ url_for('recommend', happy=1) }}">Miserable &#x1F629;</a>
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>
+  {% if count % 5 == 0 %}
+    <script type="text/javascript">
+      $('#alien').show();
+    </script>
+  {% endif %}
+
+  {% include "script.html" %}
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+<div class="">
+  {% set emojis = ['128164','128039','127811','128166','127880'] | random %}
+  <nav class="navbar navbar-expand-lg navbar-light py-0 d-flex justify-content-between">
+    <a class="navbar-brand font-roboto-700 font-25px text-white" href="{{ url_for('index') }}">
+        Moody &#{{ emojis }};
+    </a> {% if request.path == "/login" or request.path == "/signup" %} {% else %}
+    <div class="d-flex justify-content-end">
+      <ul class="navbar-nav">
+        <li class="nav-item active d-flex">
+          {% set emojis = ['128105','128105','128103','128103','128104','128104','128102'] | random %} {% if user == None %}
+          <a class="btn btn-sm btn-light font-roboto-400 mr-1" href="{{ url_for('admin') }}">Admin</a>
+          <a class="btn btn-sm btn-light font-roboto-400 mr-1" href="{{ url_for('contribute') }}">Contribute</a>
+          <a class="btn btn-sm btn-light font-roboto-400" href="{{ url_for('login') }}">Login</a> {% else %}
+          <!-- <a class="btn btn-sm btn-light font-roboto-400 mr-1" href="{{ url_for('contribute') }}">Contribute <span class="sr-only">(current)</span></a> -->
+          {% if user.username == "admin" %}
+          <a class="btn btn-sm btn-light font-roboto-700 mr-1" href="{{ url_for('admin') }}">{{user.fullname}} &#{{ emojis }};</a> {% else %}
+          <a class="btn btn-sm btn-light font-roboto-700 mr-1" href="{{ url_for('personal') }}">{{user.fullname}} &#{{ emojis }};</a> {% endif %}
+          <div class="dropdown">
+            <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+            <div class="dropdown-menu dropdown-menu-right my-2">
+              <a class="dropdown-item" href="{{ url_for('contribute') }}">Contribute</a>
+              <div class="dropdown-divider my-1"></div>
+              <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+            </div>
+          </div>
+          {% endif %}
+        </li>
+      </ul>
+    </div>
+    {% endif %}
+  </nav>
+</div>

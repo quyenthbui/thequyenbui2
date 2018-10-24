@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% include "metadata.html" %}
+  <title>Moody</title>
+  <link rel="stylesheet" href="../static/css/recommend.css">
+</head>
+
+<body class="bg-gradient animated fadeIn">
+  {% include "particle.html" %} {% include "flash-message.html" %} {% include "contribute_alert.html" %} {% include "navbar.html" %}
+
+  <div class="container my-5">
+    <div class="mt-4 bg-white rounded mr-3 px-3 py-2">
+      <div class="text-secondary font-60px font-roboto-700">
+        <p class="mb-0">Eiih, today you are&nbsp;</p>
+        <div class="dropdown mb-0">
+          <span class="dropdown-toggle text-dark" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {% if happy == 5 %}
+              cheerful &#x1F606;
+            {% elif happy == 4 %}
+              happy &#x1F600;
+            {% elif happy == 3 %}
+              okeiii &#x1F610;
+            {% elif happy == 2 %}
+              sad &#x1F61E;
+            {% elif happy == 1 %}
+              miserable &#x1F629;
+            {% endif %}
+          </span>
+          <div class="dropdown-menu line-height-30px" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" href="{{ url_for('recommend', happy=5) }}">Cheerful &#x1F606;</a>
+            <a class="dropdown-item" href="{{ url_for('recommend', happy=4) }}">Happy &#x1F600;</a>
+            <a class="dropdown-item" href="{{ url_for('recommend', happy=3) }}">OK &#x1F610;</a>
+            <a class="dropdown-item" href="{{ url_for('recommend', happy=2) }}">Sad &#x1F61E;</a>
+            <a class="dropdown-item" href="{{ url_for('recommend', happy=1) }}">Miserable &#x1F629;</a>
+          </div>
+        </div>
+        <p class="mb-0">Let's try something {% if happy >= 3 %} new. {% elif happy
+          < 3 %} fun. {% endif %} </p>
+      </div>
+    </div>
+
+    {% if user_contribution != None %}
+    <div class="d-flex justify-content-around flex-wrap mt-4">
+      <div class="col-md-5 pl-0">
+        <p class="font-roboto-700 font-25px mb-0 bg-white rounded px-3 py-1"><span class="">User's Recommendation</span></p>
+        <div class="d-flex justify-content-around flex-wrap bg-white rounded p-3 my-3">
+          <div class="">
+            <div class="">
+              <p class="font-roboto-700 font-20px">Song</p>
+            </div>
+            <div class="d-flex justify-content-around flex-wrap font-roboto-400">
+              <div class="">
+                <div class="">
+                  <a href="{{ user_contribution.song.link }}" target="_blank">
+                    <img class="rounded" src="{{ user_contribution.song.link_img }}" alt="song" height="180" width="180">
+                  </a>
+                </div>
+                <p class="mt-3 mb-0 font-weight-bold px-2 font-14px width-170px">{{ user_contribution.song.name }}</p>
+                <p class="px-2 font-13px text-grey width-170px">{{ user_contribution.song.author }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="">
+            <div class="">
+              <p class="font-roboto-700 font-20px">Book</p>
+            </div>
+            <div class="d-flex justify-content-around flex-wrap font-roboto-400">
+              <div class="">
+                <div class="">
+                  <a href="{{ user_contribution.book.link }}" target="_blank">
+                    <img class="rounded" src="{{ user_contribution.book.link_img }}" alt="book" height="240" width="180">
+                  </a>
+                </div>
+                <p class="mt-3 mb-0 font-weight-bold px-2 font-14px width-170px">{{ user_contribution.book.name }}</p>
+                <p class="px-2 font-13px text-grey width-170px">{{ user_contribution.book.author }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-7 pl-0">
+        <div class="bg-white rounded p-3 mb-3">
+          <div class="">
+            <p class="font-roboto-700 font-20px">Video</p>
+          </div>
+          <div id="carousel0" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <a href="{{ user_contribution.video.link }}" target="_blank"><img class="d-block w-100 rounded video-img" src="{{ user_contribution.video.link_img }}" alt="First slide"></a>
+                <div class="carousel-caption d-none d-md-block py-0">
+                  <h4 class="font-roboto-400 text-left mb-0"><span class="bg-dark">{{ user_contribution.video.name }}</span></h4>
+                  <p class="font-roboto-400 text-dark text-left mb-0"><span class="bg-white">{{ user_contribution.video.author }}</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="d-flex justify-content-around flex-wrap mt-4">
+      <div class="col-md-5 pl-0">
+        <p class="font-roboto-700 font-25px mb-0 bg-white rounded px-3 py-1"><span class="">Our Recommendations</span></p>
+        <div class="bg-white rounded p-3 my-3">
+          <div class="">
+            <p class="font-roboto-700 font-20px">Books</p>
+          </div>
+          <div class="d-flex justify-content-around flex-wrap font-roboto-400">
+            <div class="">
+              <div class="">
+                <a href="{{ book_admin[0].link }}" target="_blank"><img class="rounded" src="{{ book_admin[0].link_img }}" alt="book" height="260" width="170"></a>
+              </div>
+              <p class="mt-3 mb-0 font-weight-bold px-2 font-14px width-170px">{{ book_admin[0].name }}</p>
+              <p class="px-2 font-13px text-grey width-170px">{{ book_admin[0].author }}</p>
+            </div>
+            <div class="">
+              <div class="">
+                <a href="{{ book_admin[1].link }}" target="_blank"><img class="rounded" src="{{ book_admin[1].link_img }}" alt="book" height="260" width="170"></a>
+              </div>
+              <p class="mt-3 mb-0 font-weight-bold px-2 font-14px width-170px">{{ book_admin[1].name }}</p>
+              <p class="px-2 font-13px text-grey width-170px">{{ book_admin[1].author }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="place" class="bg-white rounded p-3 my-3">
+          <div class="">
+            <p><span class="font-roboto-700 font-20px">Place</span></p>
+          </div>
+          <iframe width="100%" height="400px" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAZIuQnv7mPpVPBXHLsauwemPb76iiYvSg
+                &q={{ name_place_admin }}" allowfullscreen>
+            </iframe>
+        </div>
+      </div>
+
+      <div class="col-md-7 pl-0">
+        <div class="bg-white rounded p-3 mb-3">
+          <div class="">
+            <p class="font-roboto-700 font-20px">Videos</p>
+          </div>
+          <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+
+              <div class="carousel-item active">
+                <a href="{{ video_admin[0].link }}" target="_blank"><img class="d-block w-100 rounded video-img" src="{{ video_admin[0].link_img }}" alt="First slide"></a>
+                <div class="carousel-caption d-none d-md-block py-0">
+                  <h4 class="font-roboto-400 text-left mb-0"><span class="bg-dark">{{ video_admin[0].name }}</span></h4>
+                  <p class="font-roboto-400 text-dark text-left mb-0"><span class="bg-white">{{ video_admin[0].author}}</span></p>
+                </div>
+              </div>
+
+              <div class="carousel-item">
+                <a href="{{ video_admin[1].link }}" target="_blank"><img class="d-block w-100 rounded video-img" src="{{ video_admin[1].link_img }}" alt="Second slide"></a>
+                <div class="carousel-caption d-none d-md-block py-0">
+                  <h4 class="font-roboto-400 text-left mb-0"><span class="bg-dark">{{ video_admin[1].name }}</span></h4>
+                  <p class="font-roboto-400 text-dark text-left mb-0"><span class="bg-white">{{ video_admin[1].author}}</span></p>
+                </div>
+              </div>
+
+              <div class="carousel-item">
+                <a href="{{ video_admin[2].link }}" target="_blank"><img class="d-block w-100 rounded video-img" src="{{ video_admin[2].link_img }}" alt="Third slide"></a>
+                <div class="carousel-caption d-none d-md-block py-0">
+                  <h4 class="font-roboto-400 text-left mb-0"><span class="bg-dark">{{ video_admin[2].name }}</span></h4>
+                  <p class="font-roboto-400 text-dark text-left mb-0"><span class="bg-white">{{ video_admin[2].author}}</span></p>
+                </div>
+              </div>
+
+              <div class="carousel-item">
+                <a href="{{ video_admin[3].link }}" target="_blank"><img class="d-block w-100 rounded video-img" src="{{ video_admin[3].link_img }}" alt="Fourth slide"></a>
+                <div class="carousel-caption d-none d-md-block py-0">
+                  <h4 class="font-roboto-400 text-left mb-0"><span class="bg-dark">{{ video_admin[3].name }}</span></h4>
+                  <p class="font-roboto-400 text-dark text-left mb-0"><span class="bg-white">{{ video_admin[3].author}}</span></p>
+                </div>
+              </div>
+            </div>
+
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+              </a>
+          </div>
+        </div>
+
+        <div class="bg-white rounded p-3 my-3">
+          <div class="">
+            <p class="font-roboto-700 font-20px">Songs</p>
+          </div>
+          <div class="font-roboto-400">
+            <div class="d-flex justify-content-around flex-wrap">
+              <div class="">
+                <div class="">
+                  <a href="{{ song_admin[0].link }}" target="_blank"><img class="rounded" src="{{ song_admin[0].link_img }}" alt="song" height="180" width="180"></a>
+                </div>
+                <p class="mt-3 mb-0 font-weight-bold px-2 font-14px width-170px">{{ song_admin[0].name }}</p>
+                <p class="px-2 font-13px text-grey width-170px">{{ song_admin[0].author }}</p>
+              </div>
+              <div class="">
+                <div class="">
+                  <a href="{{ song_admin[1].link }}" target="_blank"><img class="rounded" src="{{ song_admin[1].link_img }}" alt="song" height="180" width="180"></a>
+                </div>
+                <p class="mt-3 mb-0 font-weight-bold px-2 font-14px width-170px">{{ song_admin[1].name }}</p>
+                <p class="px-2 font-13px text-grey width-170px">{{ song_admin[1].author }}</p>
+              </div>
+              <div class="">
+                <div class="">
+                  <a href="{{ song_admin[2].link }}" target="_blank"><img class="rounded" src="{{ song_admin[2].link_img }}" alt="song" height="180" width="180"></a>
+                </div>
+                <p class="mt-3 mb-0 font-weight-bold px-2 font-14px width-170px">{{ song_admin[2].name }}</p>
+                <p class="px-2 font-13px text-grey width-170px">{{ song_admin[2].author }}</p>
+              </div>
+              <div class="">
+                <div class="">
+                  <a href="{{ song_admin[3].link }}" target="_blank"><img class="rounded" src="{{ song_admin[3].link_img }}" alt="song" height="180" width="180"></a>
+                </div>
+                <p class="mt-3 mb-0 font-weight-bold px-2 font-14px width-170px">{{ song_admin[3].name }}</p>
+                <p class="px-2 font-13px text-grey width-170px">{{ song_admin[3].author }}</p>
+              </div>
+              <div class="">
+                <div class="">
+                  <a href="{{ song_admin[4].link }}" target="_blank"><img class="rounded" src="{{ song_admin[4].link_img }}" alt="song" height="180" width="180"></a>
+                </div>
+                <p class="mt-3 mb-0 font-weight-bold px-2 font-14px width-170px">{{ song_admin[4].name }}</p>
+                <p class="px-2 font-13px text-grey width-170px">{{ song_admin[4].author }}</p>
+              </div>
+              <div class="">
+                <div class="">
+                  <a href="{{ song_admin[5].link }}" target="_blank"><img class="rounded" src="{{ song_admin[5].link_img }}" alt="song" height="180" width="180"></a>
+                </div>
+                <p class="mt-3 mb-0 font-weight-bold px-2 font-14px width-170px">{{ song_admin[5].name }}</p>
+                <p class="px-2 font-13px text-grey width-170px">{{ song_admin[5].author }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if count % 5 == 0 %}
+  <script type="text/javascript">
+    $('#alien').show();
+  </script>
+  {% endif %}
+
+  {% include "script.html" %}
+</body>
+
+</html>

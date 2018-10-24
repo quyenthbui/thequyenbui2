@@ -1,0 +1,33 @@
+.margin-top-10 {
+  margin-top: 10%
+}
+
+.border-bot-3px {
+  border-bottom: 3px solid gray
+}
+
+.font-60px {
+  font-size: 60px
+}
+
+.mainContent {
+  margin: 20px;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
+.color-155724 {
+  color: #155724;
+}
+
+#notice {
+  display: none
+}
+
+@media only screen and (min-width:576px) {
+  #notice {
+    display: block
+  }
+}

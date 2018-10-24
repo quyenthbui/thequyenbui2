@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {% include "metadata.html" %}
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="../static/css/admin.css">
+</head>
+
+<body class="bg-gradient">
+  {% include "flash-message.html" %} {% include "navbar.html" %}
+
+  <div class="container bg-white rounded my-3 py-2 animated fadeIn">
+    <div class="d-flex flex-wrap justify-content-start">
+      <p class="font-roboto-700 font-45px my-0">Overall</p>
+    </div>
+    <div class="d-flex py-2 flex-wrap">
+      <div class="col-md-3 px-0">
+        <p class="text-uppercase font-roboto-400 mb-0 font-weight-bold text-secondary">Users</p>
+        <p class="font-roboto-400 font-30px mb-0">{{ length_user }}</p>
+      </div>
+      <div class="col-md-3 px-0">
+        <p class="text-uppercase font-roboto-400 mb-0 font-weight-bold text-secondary">Contributed Users</p>
+        <p class="font-roboto-400 font-30px mb-0">{{ length_contributed_user }}</p>
+      </div>
+      <div class="col-md-3 px-0">
+        <p class="text-uppercase font-roboto-400 mb-0 font-weight-bold text-secondary">User Contributions</p>
+        <p class="font-roboto-400 font-30px mb-0">{{ length_user_contribution }}</p>
+      </div>
+      <div class="col-md-3 px-0">
+        <p class="text-uppercase font-roboto-400 mb-0 font-weight-bold text-secondary">Base Contributions</p>
+        <p class="font-roboto-400 font-30px mb-0">{{ length_base }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container bg-white rounded my-3 py-2 animated fadeIn">
+    <p class="font-roboto-700 font-30px">Users</p>
+    <div class="">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Contributed</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user_ind in all_user %}
+            {% if user_ind.username != "admin" %}
+              <tr>
+                <td>{{ user_ind.username }}</td>
+                <td>{{ user_ind.fullname }}</td>
+                <td>{{ user_ind.email }}</td>
+                <td>{{ user_ind.contributed }}</td>
+                <td><a href="{{ url_for('delete_user', user_id = user_ind.id) }}" class="btn btn-danger btn-sm">Delete</a></td>
+              </tr>
+            {% endif%}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="container bg-white rounded my-3 py-2 animated fadeIn">
+    <p class="font-roboto-700 font-30px">Waiting List</p>
+    {% if length == 0 %}
+    <p class="font-roboto-700 mb-0 font-25px">No contribution to be approved</p>
+    {% else %} {% for contribution in not_approved_contribution %}
+    <div class="d-flex flex-wrap justify-content-between">
+      <div class="d-flex flex-wrap justify-content-start">
+        <p class="text-uppercase font-roboto-400 font-30px font-weight-bold mb-0">
+          Contribution {{ loop.index }} - Happy level:
+          <span class="text-secondary">
+            {% if contribution.happy == 5 %}
+              Cheerful &#x1F606;
+            {% elif contribution.happy == 4 %}
+              Happy &#x1F600;
+            {% elif contribution.happy == 3 %}
+              OK &#x1F610;
+            {% elif contribution.happy == 2 %}
+              Sad &#x1F61E;
+            {% else %}
+              Miserable &#x1F629;
+            {% endif %}
+          </span>
+        </p>
+        <p class="mb-0 ml-1 font-25px"><span class="badge badge-info">by {{ contribution.user_id.username }}</span></p>
+      </div>
+      <div class="d-flex font-25px flex-wrap">
+        <p class="mb-0 ml-1"><a href="{{ url_for('approve_contribution', contribution_id = contribution.id) }}" class="badge badge-success">Approve</a></p>
+        <p class="mb-0 ml-1"><a href="{{ url_for('delete_contribution', contribution_id = contribution.id) }}" class="badge badge-danger">Delete</a></p>
+      </div>
+
+    </div>
+    <div class="">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Author/Category</th>
+            <th scope="col">Link</th>
+            <th scope="col">Thumbnail</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Book</th>
+            <td>{{ contribution.book.name }}</td>
+            <td>{{ contribution.book.author }}</td>
+            <td><a href="{{ contribution.book.link }}" target="_blank">Read</a></td>
+            <td>
+              {% if contribution.book.link_img != "https://sv1.uphinhnhanh.com/images/2018/05/10/notebook.png" %}
+              <a href="{{ contribution.book.link_img }}" target="_blank">View</a>
+              {% else %}
+              Default
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Song</th>
+            <td>{{ contribution.song.name }}</td>
+            <td>{{ contribution.song.author }}</td>
+            <td><a href="{{ contribution.song.link }}" target="_blank">Listen</a></td>
+            <td>
+              {% if contribution.song.link_img != "https://sv1.uphinhnhanh.com/images/2018/05/10/music-player.png" %}
+              <a href="{{ contribution.song.link_img }}" target="_blank">View</a>
+              {% else %}
+              Default
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Video</th>
+            <td>{{ contribution.video.name }}</td>
+            <td>{{ contribution.video.author }}</td>
+            <td><a href="{{ contribution.video.link }}" target="_blank">Watch</a></td>
+            <td>
+              {% if contribution.video.link_img != "https://sv1.uphinhnhanh.com/images/2018/05/10/default-video-image.png" %}
+              <a href="{{ contribution.video.link_img }}" target="_blank">View</a>
+              {% else %}
+              Default
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Place</th>
+            <td>{{ contribution.place.name }}</td>
+            <td>{{ contribution.place.describe}}</td>
+            <td><a href="http://maps.google.com/maps?q={{ contribution.place.name }}" target="_blank">View</a></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {% endfor %} {% endif %}
+  </div>
+
+  {% include "script.html" %}
+</body>
+
+</html>

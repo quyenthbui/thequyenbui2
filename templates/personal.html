@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  {% include "metadata.html" %}
+  <title>{{ user.fullname }}</title>
+  <link rel="stylesheet" href="../static/css/personal.css">
+</head>
+
+<body class="bg-gradient">
+  {% include "particle.html" %} {% include "flash-message.html" %} {% include "contribute_alert.html" %} {% include "navbar.html" %}
+
+  <div class="container bg-white rounded my-5 py-2 animated fadeIn">
+    <div class="d-flex py-2 flex-wrap">
+      <div class="col-md-4 px-0">
+        <p class="text-uppercase font-roboto-400 mb-0 font-weight-bold text-secondary">Name</p>
+        <p class="font-roboto-400 font-30px mb-0">{{ user.fullname }}</p>
+      </div>
+      <div class="col-md-4 px-0">
+        <p class="text-uppercase font-roboto-400 mb-0 font-weight-bold text-secondary">Username</p>
+        <p class="font-roboto-400 font-30px mb-0">{{ user.username }}</p>
+      </div>
+      <div class="col-md-4 px-0">
+        <p class="text-uppercase font-roboto-400 mb-0 font-weight-bold text-secondary">Email</p>
+        <p class="font-roboto-400 font-30px mb-0">{{ user.email }}</p>
+      </div>
+    </div>
+
+    <div class="py-2">
+      <p class="text-uppercase font-roboto-400 mb-0 font-weight-bold text-secondary">Contribution</p>
+      {% if length == 0 %}
+      <p class="font-roboto-400 font-30px">You haven't contributed anything. Let's contribute now.</p>
+      <a href="{{ url_for('contribute') }}" class="btn btn-primary">Contribute</a> {% else %}
+      <p class="font-roboto-400 font-30px">You have contributed {{ length }} time(s). Great. Keep it up.</p>
+      {% endif %}
+    </div>
+
+    {% if length > 0 %} {% for contribution in all_contribution %}
+    <div class="d-flex flex-wrap justify-content-between">
+      <div class="d-flex justify-content-start flex-wrap">
+        <p class="text-uppercase font-roboto-400 font-30px font-weight-bold mb-0">
+          Contribution {{ loop.index }} - Happy level:
+          <span class="text-secondary">
+            {% if contribution.happy == 5 %}
+              Cheerful &#x1F606;
+            {% elif contribution.happy == 4 %}
+              Happy &#x1F600;
+            {% elif contribution.happy == 3 %}
+              OK &#x1F610;
+            {% elif contribution.happy == 2 %}
+              Sad &#x1F61E;
+            {% else %}
+              Miserable &#x1F629;
+            {% endif %}
+          </span>
+        </p>
+        {% if contribution.approved == False %}
+        <p class="mb-0 ml-1 font-25px"><span class="badge badge-warning">Not approved</span></p>
+        {% else %}
+        <p class="mb-0 ml-1 font-25px"><span class="badge badge-success">Approved</span></p>
+        {% endif %}
+      </div>
+      <div class="d-flex font-25px">
+        <p class="mb-0 ml-1"><a href="{{ url_for('delete_contribution', contribution_id = contribution.id) }}" class="badge badge-danger">Delete</a></p>
+      </div>
+
+    </div>
+    <div class="">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Author</th>
+            <th scope="col">Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Book</th>
+            <td>{{ contribution.book.name }}</td>
+            <td>{{ contribution.book.author }}</td>
+            <td><a href="{{ contribution.book.link }}">Read</a></td>
+          </tr>
+          <tr>
+            <th scope="row">Song</th>
+            <td>{{ contribution.song.name }}</td>
+            <td>{{ contribution.song.author }}</td>
+            <td><a href="{{ contribution.song.link }}">Listen</a></td>
+          </tr>
+          <tr>
+            <th scope="row">Video</th>
+            <td>{{ contribution.video.name }}</td>
+            <td>{{ contribution.video.author }}</td>
+            <td><a href="{{ contribution.video.link }}">Watch</a></td>
+          </tr>
+          <tr>
+            <th scope="row">Place</th>
+            <td>{{ contribution.place.name }}</td>
+            <td></td>
+            <td><a href="http://maps.google.com/maps?q={{ contribution.place.name }}" target="_blank">View</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {% endfor %} {% endif %}
+  </div>
+
+  {% if count % 5 == 0 %}
+  <script type="text/javascript">
+    $('#alien').show();
+  </script>
+  {% endif %} {% include "script.html" %}
+</body>
+
+</html>
